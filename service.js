@@ -50,16 +50,16 @@ app.get('/', function(req, res){
 	    files, 
 	    getStats, 
 	    function(err, results) {
-
 		res.send(
-		    results.map(
+		    results.sort(function(a, b) {
+			return b.count-a.count;
+		    }).map(
 			function(result) {
 			    return "<a href=/?id="+result.file+">"+
 				result.file+
 				" "+
 				result.count + 
-				"</a>";
-
+				"</a>";			    
 			}).join("<br>"));});
     });
 });
