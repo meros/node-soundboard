@@ -3,10 +3,11 @@ var exec    = require('child_process').exec;
 var walk    = require('walk');
 var async   = require('async')
 
-var app     = express();
+var configuration = require('./configuration');
 
-var soundsDir = "/home/alexanders/sounds"
-var scriptDir = "/home/alexanders/sounds"
+var app     = express();
+var soundsDir = configuration.directories.sounds;
+var scriptDir = configuration.directories.sounds;
 
 var countCache = {}
 
@@ -14,7 +15,7 @@ String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-function getFiles(done) {
+function getWavFiles(done) {
     var files   = [];
     var walker  = walk.walk(soundsDir, { followLinks: false });
 
@@ -30,11 +31,10 @@ function getFiles(done) {
     });
 }
 
-function getStats(file, callback) {
+function getStatsForOneFile(file, callback) {
     if (file in countCache) {
 	callback(
-	    null,
-	    {file: file, count: countCache[file]});	
+	    {file: file, name: file, count: countCache[file]});	
     } else {
 	console.log("Slow stats fetching of " + file);
 	exec(
@@ -43,36 +43,58 @@ function getStats(file, callback) {
 		var count = parseInt(stdout);
 		countCache[file] = count;
 		callback(
-		    null, 
-		    {file: file, count: count});
+		    {file: file, name: file, count: count});
 	    });
     }
 }
 
+function playFile(file) {
+    if (file in countCache) {
+	countCache[file] = countCache[file] + 1;
+    }
+
+    exec(scriptDir + '/play.sh ' + file)
+}
+
+function getStatsForFiles(files, callback) {
+    async.map(
+	files, 
+	function(file, callback) {
+	    getStatsForOneFile(file, function(result) {
+		callback(null, result);
+	    });
+	},
+	function(err, result) {
+	    callback(result);
+	});
+}
+
+function getWavFilesWithStats(callback) {
+    getWavFiles(function(files) {
+	getStatsForFiles(files, function(filesWithStats) {
+	    callback(filesWithStats);
+	});
+    });
+}
+
 app.get('/', function(req, res){
     if (!!req.query.id) {
-	if (req.query.id in countCache) {
-	    countCache[req.query.id] =  countCache[req.query.id] + 1;
-	}
-	exec(scriptDir + '/play.sh ' + req.query.id)
+	playFile(req.query.id);
     } 
 
-    getFiles(function(files) {
-	async.map(
-	    files, 
-	    getStats, 
-	    function(err, results) {
-		res.send(
-		    results.sort(function(a, b) {
-			return b.count-a.count;
-		    }).map(
-			function(result) {
-			    return "<a href=/?id="+result.file+">"+
-				result.file+
-				" "+
-				result.count + 
-				"</a>";			    
-			}).join("<br>"));});
+    getWavFilesWithStats(function(filesWithStats) {
+	console.log(filesWithStats);
+	res.send(
+	    filesWithStats.sort(function(a, b) {
+		return b.count-a.count;
+	    }).map(
+		function(result) {
+		    return "<span><a href=/?id="+result.file+">"+
+			result.name + 
+			"</a>" + 
+			result.count + 
+			"</span>";			    
+		}).join("<br>"));
     });
 });
 
