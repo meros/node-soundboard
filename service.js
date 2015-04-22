@@ -8,6 +8,8 @@ var app     = express();
 var soundsDir = "/home/alexanders/sounds"
 var scriptDir = "/home/alexanders/sounds"
 
+var countCache = {}
+
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -29,22 +31,32 @@ function getFiles(done) {
 }
 
 function getStats(file, callback) {
-    console.log(file);
-    exec(
-	scriptDir + "/stats.sh " + file, 
-	function(error, stdout, stderr){ 
-	    callback(
-		null, 
-		{file: file, count: stdout});
-	});
+    if (file in countCache) {
+	callback(
+	    null,
+	    {file: file, count: countCache[file]});	
+    } else {
+	console.log("Slow stats fetching of " + file);
+	exec(
+	    scriptDir + "/stats.sh " + file, 
+	    function(error, stdout, stderr){ 
+		var count = parseInt(stdout);
+		countCache[file] = count;
+		callback(
+		    null, 
+		    {file: file, count: count});
+	    });
+    }
 }
 
 app.get('/', function(req, res){
     if (!!req.query.id) {
+	if (req.query.id in countCache) {
+	    countCache[req.query.id] =  countCache[req.query.id] + 1;
+	}
 	exec(scriptDir + '/play.sh ' + req.query.id)
     } 
 
-    console.log("asdf");
     getFiles(function(files) {
 	async.map(
 	    files, 
