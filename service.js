@@ -55,9 +55,9 @@ function addFileImage(file, done) {
 	function(existingImageFiles) {
 	    result = file;
 	    if (typeof existingImageFiles[0] === 'undefined') {
-		result.imgName = "generic_image.jpg";
+		result.imgName = "/img/generic_image.jpg";
 	    } else {
-		result.imgName = existingImageFiles[0];
+		result.imgName = "/img/" + existingImageFiles[0];
 	    }
 
 	    done(result);
