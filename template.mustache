@@ -48,14 +48,21 @@
         height: 100%;
         line-height: 150%;
       }
+     .imgScale {
+	width: 70%;
+	height: 70%;
+	margin-left: 15%;
+	margin-top: 15%;
+	border-radius: 100px;
+     }
     </style>
   </head>
 
   <body>
     <h1>Telia Soundboard</h1>
-{{#data}}
-   <a href="/?id={{file}}">{{name}}</a>
-{{/data}}
+	{{#files}}    
+	<a href="?id={{{root}}}{{{name}}}"><img class="imgScale" src="{{imgName}}"></img></a>
+	{{/files}}
   </body>
 
 </html>

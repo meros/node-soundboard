@@ -1,30 +1,36 @@
-var express   = require('express');
-var exec      = require('child_process').exec;
-var walk      = require('walk');
-var async     = require('async');
-var mustache  = require('mustache');
-var fs        = require('fs');
+var express = require('express');
+var exec    = require('child_process').exec;
+var walk    = require('walk');
+var async   = require('async')
+var fs	    = require('fs');
+var mustache = require('mustache');
+var path    = require('path');
+
+var app     = express();
 
 var configuration = require('./configuration');
 
-var app     = express();
 var soundsDir = configuration.directories.sounds;
 var scriptDir = configuration.directories.sounds;
 
 var countCache = {}
 
+var htmlTemplate = fs.readFileSync("template.mustache", "utf8");
+var imageTypes = [".jpg", ".gif", ".png"];
+
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-function getWavFiles(done) {
+function getFiles(done) {
     var files   = [];
     var walker  = walk.walk(soundsDir, { followLinks: false });
 
     walker.on('file', function(root, stat, next) {
 	if(stat.name.endsWith(".wav")) {
-	    files.push(root + '/' + stat.name);
+	    files.push({root: root, name: stat.name});
 	}
+
 	next();
     });
 
@@ -33,21 +39,30 @@ function getWavFiles(done) {
     });
 }
 
-function getStatsForOneFile(file, callback) {
-    if (file in countCache) {
-	callback(
-	    {file: file, name: file, count: countCache[file]});	
-    } else {
-	console.log("Slow stats fetching of " + file);
-	exec(
-	    scriptDir + "/stats.sh " + file, 
-	    function(error, stdout, stderr){ 
-		var count = parseInt(stdout);
-		countCache[file] = count;
-		callback(
-		    {file: file, name: file, count: count});
-	    });
-    }
+function addFileImage(file, done) {
+    var imgBasePath = file.root + "/img/";
+    var imgBaseName = file.name.replace(/\.[^/.]+$/, "");
+
+    var potentialImageFiles = imageTypes.map(function(type) {
+	return imgBaseName + type;
+    });
+    
+    async.filter(
+	potentialImageFiles, 
+	function(potentialFile, callback) {
+	    fs.exists(imgBasePath + potentialFile, callback);
+	},
+	function(existingImageFiles) {
+	    result = file;
+	    if (typeof existingImageFiles[0] === 'undefined') {
+		result.imgName = "generic_image.jpg";
+	    } else {
+		result.imgName = existingImageFiles[0];
+	    }
+
+	    done(result);
+	}
+    )
 }
 
 function playFile(file) {
@@ -58,42 +73,27 @@ function playFile(file) {
     exec(scriptDir + '/play.sh ' + file)
 }
 
-function getStatsForFiles(files, callback) {
-    async.map(
-	files, 
-	function(file, callback) {
-	    getStatsForOneFile(file, function(result) {
-		callback(null, result);
-	    });
-	},
-	function(err, result) {
-	    callback(result);
-	});
-}
-
-function getWavFilesWithStats(callback) {
-    getWavFiles(function(files) {
-	getStatsForFiles(files, function(filesWithStats) {
-	    callback(filesWithStats);
-	});
-    });
-}
-
-var template = fs.readFileSync("index.template", "utf8");
-
 app.get('/', function(req, res){
     if (!!req.query.id) {
 	playFile(req.query.id);
     } 
 
-    getWavFilesWithStats(function(filesWithStats) {
-	console.log(filesWithStats);
-	filesWithStats.sort(function(a, b) {
-	    return b.count-a.count;
-	});
-
-	res.send(mustache.render(template, {data: filesWithStats}));
+    getFiles(function(files) {
+	async.map(
+	    files, 
+	    function(file, callback) {
+		addFileImage(file, function(file) {
+		    callback(null, file);
+		})
+	    },
+	    function(error, result) {
+		console.log(result);
+ 		res.send(mustache.to_html(htmlTemplate, {files: result}));
+	})
     });
 });
 
-app.listen(3000);
+app.use('/img', express.static(soundsDir + '/img/'));
+
+app.listen(8080);
+console.log('App starting...');
