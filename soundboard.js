@@ -10,7 +10,7 @@ var app = express();
 
 var configuration = require('./configuration');
 
-var htmlTemplate = fs.readFileSync("template.mustache", "utf8");
+var htmlTemplate = fs.readFileSync("templates/index.mustache", "utf8");
 var imageTypes = [".jpg", ".gif", ".png"];
 
 String.prototype.endsWith = function(suffix) {
