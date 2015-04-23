@@ -1,1 +1,1 @@
-A soundboard web app using node-js
+A simple, but slick soundboard app written in node.js
