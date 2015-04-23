@@ -57,3 +57,10 @@ body{
     height: 100%;
     line-height: 150%;
  }
+.imgScale {
+	width: 70%;
+	height: 70%;
+	margin-left: 15%;
+	margin-top: 15%;
+	border-radius: 100px;
+ }
