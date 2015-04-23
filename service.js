@@ -96,6 +96,7 @@ app.get('/', function(req, res){
 });
 
 app.use('/img', express.static(soundsDir + '/img/'));
+app.use('/styles', express.static(__dirname + '/styles/'));
 
-app.listen(8080);
+app.listen(8081);
 console.log('App starting...');
