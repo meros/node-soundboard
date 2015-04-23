@@ -1,7 +1,6 @@
 module.exports = {
-  directories: {
-      scripts: "/home/alexanders/sounds",
-      sounds: "/home/alexanders/sounds"
-  }
+  soundsDir: process.env.HOME + "/sounds",
+  pageTitle: "Soundboard",
+  listenPort: 8080
 };
 
