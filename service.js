@@ -70,7 +70,9 @@ function playFile(file) {
 	countCache[file] = countCache[file] + 1;
     }
 
-    exec(scriptDir + '/play.sh ' + file)
+    console.log(scriptDir + '/play.sh ' + soundsDir + file)
+
+    exec(scriptDir + '/play.sh ' + soundsDir + file)
 }
 
 app.get('/', function(req, res){
