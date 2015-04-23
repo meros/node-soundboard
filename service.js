@@ -1,7 +1,9 @@
-var express = require('express');
-var exec    = require('child_process').exec;
-var walk    = require('walk');
-var async   = require('async')
+var express   = require('express');
+var exec      = require('child_process').exec;
+var walk      = require('walk');
+var async     = require('async');
+var mustache  = require('mustache');
+var fs        = require('fs');
 
 var configuration = require('./configuration');
 
@@ -77,6 +79,8 @@ function getWavFilesWithStats(callback) {
     });
 }
 
+var template = fs.readFileSync("index.template", "utf8");
+
 app.get('/', function(req, res){
     if (!!req.query.id) {
 	playFile(req.query.id);
@@ -84,17 +88,11 @@ app.get('/', function(req, res){
 
     getWavFilesWithStats(function(filesWithStats) {
 	console.log(filesWithStats);
-	res.send(
-	    filesWithStats.sort(function(a, b) {
-		return b.count-a.count;
-	    }).map(
-		function(result) {
-		    return "<span><a href=/?id="+result.file+">"+
-			result.name + 
-			"</a>" + 
-			result.count + 
-			"</span>";			    
-		}).join("<br>"));
+	filesWithStats.sort(function(a, b) {
+	    return b.count-a.count;
+	});
+
+	res.send(mustache.render(template, {data: filesWithStats}));
     });
 });
 
