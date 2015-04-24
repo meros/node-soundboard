@@ -8,14 +8,25 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/switch.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/static/play.js"></script>
   </head>
 
   <body>
         <h1>{{{pageTitle}}}</h1>
 	      {{#files}}    
-	      <a href="javascript:void(0)" onclick="$.ajax({url:'?id={{{name}}}'})"><img class="button-image" src="{{imgName}}"></img></a>
+	      <a href="javascript:void(0)" onclick="soundboard.play('{{{name}}}', $('.switch-play-remote').prop('checked'))">
+          <img class="button-image" src="data/{{{imgName}}}"/>
+        </a>
 	      {{/files}}
+        <div class="onoffswitch">
+          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switch-play-remote" id="myonoffswitch" checked>
+          <label class="onoffswitch-label" for="myonoffswitch">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
   </body>
 
 </html>

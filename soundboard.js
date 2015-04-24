@@ -1,17 +1,14 @@
-var express = require('express');
-var exec = require('child_process').exec;
-var walk = require('walk');
 var async = require('async')
+var exec = require('child_process').exec;
+var express = require('express');
 var fs = require('fs');
 var mustache = require('mustache');
 var path = require('path');
-
-var app = express();
+var walk = require('walk');
 
 var configuration = require('./configuration');
-
-var htmlTemplate = fs.readFileSync("templates/index.mustache", "utf8");
 var imageTypes = [".jpg", ".gif", ".png"];
+var htmlTemplate = fs.readFileSync("templates/index.mustache", "utf8");
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -19,7 +16,7 @@ String.prototype.endsWith = function(suffix) {
 
 function getSoundFileNames(done) {
     var files = [];
-    var walker = walk.walk(configuration.soundsDir, {
+    var walker = walk.walk(configuration.dataDir, {
         followLinks: false
     });
 
@@ -37,17 +34,18 @@ function getSoundFileNames(done) {
 }
 
 function getFileFullData(file, done) {
-    var imgBasePath = configuration.soundsDir + "/img/";
+    var imgBasePath = configuration.dataDir;
     var imgBaseName = file.replace(/\.[^/.]+$/, "");
 
     var potentialImageFiles = imageTypes.map(function(type) {
         return imgBaseName + type;
     });
 
+
     async.filter(
         potentialImageFiles,
         function(potentialFile, callback) {
-            fs.exists(imgBasePath + potentialFile, callback);
+            fs.exists(path.join(imgBasePath, potentialFile), callback);
         },
         function(existingImageFiles) {
             result = {
@@ -55,9 +53,9 @@ function getFileFullData(file, done) {
             };
 
             if (typeof existingImageFiles[0] === 'undefined') {
-                result.imgName = "/img/generic_image.jpg";
+                result.imgName = "generic_image.jpg";
             } else {
-                result.imgName = "/img/" + existingImageFiles[0];
+                result.imgName = existingImageFiles[0];
             }
 
             done(null, result);
@@ -66,8 +64,7 @@ function getFileFullData(file, done) {
 }
 
 function playFile(file) {
-    var command = __dirname + '/scripts/play.sh ' + configuration.soundsDir + "/" + file;
-    console.log(command)
+    var command = __dirname + '/scripts/play.sh ' + configuration.dataDir + "/" + file;
     exec(command)
 }
 
@@ -79,6 +76,8 @@ function getFilesFullData(callback) {
             callback);
     });
 }
+
+var app = express();
 
 app.get('/', function(req, res) {
     if (!!req.query.id) {
@@ -93,7 +92,7 @@ app.get('/', function(req, res) {
     });
 });
 
-app.use('/img', express.static(configuration.soundsDir + '/img/'));
+app.use('/data', express.static(configuration.dataDir));
 app.use('/static', express.static(__dirname + '/static/'));
 app.listen(configuration.listenPort);
 

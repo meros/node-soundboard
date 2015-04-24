@@ -1,5 +1,5 @@
 module.exports = {
-  soundsDir: process.env.HOME + "/sounds",
+  dataDir: process.env.HOME + "/sounds",
   pageTitle: "Soundboard",
   listenPort: 8080
 };
