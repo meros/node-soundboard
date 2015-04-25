@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -11,21 +10,20 @@
     <link rel="stylesheet" href="/styles/switch.css">
     <script data-main="js/soundboard" src="js/require.js"></script>
   </head>
-
   <body>
-        <h1>{{{pageTitle}}}</h1>
-	      {{#files}}    
-	      <a class="sound" href="javascript:void(0)" data-soundfile="{{{name}}}">
-          <img class="button-image" src="data/{{{imgName}}}"/>
-        </a>
-	      {{/files}}
-        <div class="onoffswitch">
-          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switch-play-remote" id="myonoffswitch" checked>
-          <label class="onoffswitch-label" for="myonoffswitch">
-            <span class="onoffswitch-inner"></span>
-            <span class="onoffswitch-switch"></span>
-          </label>
-        </div>
+    <h1>{{{pageTitle}}}</h1>
+    {{#files}}
+    <a class="button-sound" href="javascript:void(0)" data-sound="{{{name}}}">
+      <img class="button-image" src="data/{{{imgName}}}"/>
+    </a>
+    {{/files}}
+    <div class="onoffswitch">
+      <input class="onoffswitch-checkbox switch-play-remote" type="checkbox" name="onoffswitch" id="myonoffswitch" checked>
+      <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+      </label>
+    </div>
+    <audio/>
   </body>
-
 </html>

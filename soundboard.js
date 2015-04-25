@@ -1,6 +1,5 @@
 var async = require('async')
 var exec = require('child_process').exec;
-var express = require('express');
 var fs = require('fs');
 var mustache = require('mustache');
 var path = require('path');
@@ -9,6 +8,13 @@ var walk = require('walk');
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
 var htmlTemplate = fs.readFileSync("templates/index.mustache", "utf8");
+
+// Set up express and io
+var express = require('express'),
+    app = express(),
+    http = require('http'),
+    server = http.createServer(app).listen(configuration.listenPort),
+    io = require('socket.io').listen(server);
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -77,8 +83,6 @@ function getFilesFullData(callback) {
     });
 }
 
-var app = express();
-
 app.get('/', function(req, res) {
     if (!!req.query.id) {
         playFile(req.query.id);
@@ -94,6 +98,14 @@ app.get('/', function(req, res) {
 
 app.use('/data', express.static(configuration.dataDir));
 app.use('/', express.static(path.join(__dirname, 'www')));
-app.listen(configuration.listenPort);
+
+
+
+io.on('connection', function(socket) {
+    console.log("user joined");
+    socket.on('play', function(soundfile) {
+        io.sockets.emit('play', soundfile)
+    });
+});
 
 console.log('Soundboard is starting on port ' + configuration.listenPort + '...');
