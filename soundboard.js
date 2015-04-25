@@ -93,7 +93,7 @@ app.get('/', function(req, res) {
 });
 
 app.use('/data', express.static(configuration.dataDir));
-app.use('/static', express.static(__dirname + '/static/'));
+app.use('/', express.static(path.join(__dirname, 'www')));
 app.listen(configuration.listenPort);
 
 console.log('Soundboard is starting on port ' + configuration.listenPort + '...');
