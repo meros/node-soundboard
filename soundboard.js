@@ -70,7 +70,7 @@ function getFileFullData(file, done) {
 }
 
 function playFile(file) {
-    var command = __dirname + '/scripts/play.sh ' + configuration.dataDir + "/" + file;
+    var command = path.join(__dirname, '/scripts/play.sh') + ' ' + configuration.dataDir + "/" + file;
     exec(command)
 }
 
@@ -102,9 +102,9 @@ app.use('/', express.static(path.join(__dirname, 'www')));
 
 
 io.on('connection', function(socket) {
-    console.log("user joined");
     socket.on('play', function(soundfile) {
-        io.sockets.emit('play', soundfile)
+        console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
+        io.sockets.emit('play', soundfile);
     });
 });
 
