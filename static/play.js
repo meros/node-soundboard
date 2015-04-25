@@ -5,14 +5,8 @@ var soundboard = new function() {
                 url: '?id=' + id
             });
         } else {
-            var audioElement = document.createElement('audio');
-            audioElement.setAttribute('src', '/data/' + id);
-            audioElement.setAttribute('autoplay', 'autoplay');
-
-            $.get();
-            audioElement.addEventListener("load", function() {
-                audioElement.play();
-            }, true);
+            var audio = new Audio('/data/' + id);
+	    audio.play();
         }
     }
 }
