@@ -1,4 +1,4 @@
-body {
+.flexy {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,7 +8,7 @@ body {
     justify-content: center;
 }
 
-h1 {
+.flexy h1 {
     color: #888;
     width: 100%;
     text-align: center;
@@ -18,7 +18,7 @@ h1 {
     margin-bottom: 40px;
 }
 
-a {
+.flexy a {
     float: left;
     display: block;
     position: relative;
@@ -32,7 +32,7 @@ a {
     margin-bottom: 10px;
 }
 
-a:before {
+.flexy a:before {
     color: #FFF;
     font-size: 4em;
     text-align: center;
@@ -44,7 +44,7 @@ a:before {
     line-height: 150%;
 }
 
-img.button-image {
+.flexy img.button-image {
     width: 70%;
     height: 70%;
     margin-left: 15%;
