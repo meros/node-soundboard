@@ -17,6 +17,8 @@ Features:
 * Unlimited (almost) rimshots
 * Unlimited (almost) any sound (given that you are covered in the two categories above)
 * Mobile friendly
+* Remote playback on server for 'I didn't just ruin the conentration in the room' deniability
+* Broadcast playback to all connected client AT THE SAME TIME for the ultimate farting-around experience
 * Local playback on your mobile if you are too far away from any speaker
 * 100% vegan
 
