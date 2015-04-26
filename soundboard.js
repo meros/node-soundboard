@@ -57,13 +57,7 @@ function getFileFullData(file, done) {
             result = {
                 name: file
             };
-
-            if (typeof existingImageFiles[0] === 'undefined') {
-                result.imgName = "generic_image.jpg";
-            } else {
-                result.imgName = existingImageFiles[0];
-            }
-
+            result.imgName = existingImageFiles[0] || '';
             done(null, result);
         }
     )
@@ -95,8 +89,8 @@ app.get('/', function(req, res) {
         }));
     });
 });
-
 app.use('/data', express.static(configuration.dataDir));
+app.use("/images", express.static(__dirname + '/images'));
 app.use('/', express.static(path.join(__dirname, 'www')));
 
 
@@ -108,4 +102,4 @@ io.on('connection', function(socket) {
     });
 });
 
-console.log('Soundboard is starting on port ' + configuration.listenPort + '...');
+console.log('Soundboard is starting on port http://localhost:' + configuration.listenPort + '...');

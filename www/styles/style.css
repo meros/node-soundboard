@@ -1,3 +1,56 @@
+body{
+    padding-top: 60px;
+}
+header{
+    width: 100%;
+    position: absolute;
+    background-color: #999;
+    top: 0;left: 0;
+}
+header p{
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    float: left;
+    line-height: 2.5em;
+    padding: 15px;
+    box-sizing: border-box;
+    font: normal normal normal 11px/normal '.HelveticaNeueDeskInterface-Regular';
+    display: inline-block;
+}
+header h1{
+    float: left;
+    margin: 0;
+    color: #333;
+    font-family: sans-serif;
+    padding: 5px 15px;
+    font-weight: 100;
+    font-size: 20px;
+    line-height: 33px;
+}
+header button{
+    height: 100%;
+    position: relative;
+    padding: 10px 15px;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    float: right;
+    cursor: pointer;
+    outline: none;
+    border-right: 1px solid rgba(0,0,0,.1)
+}
+header button.active{
+    background-color:aquamarine;
+    color: #333;
+}
+.sectioned{
+    float: right;
+    display: flex;
+    flex-direction: row;
+    height: 43px;
+}
 .flexy {
     display: flex;
     flex-direction: row;
@@ -18,7 +71,7 @@
     margin-bottom: 40px;
 }
 
-.flexy a {
+.button{
     float: left;
     display: block;
     position: relative;
@@ -30,24 +83,29 @@
     box-sizing: border-box;
     margin-right: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
-.flexy a:before {
-    color: #FFF;
-    font-size: 4em;
-    text-align: center;
-    left: 0;
+.button:hover .button-hover{
     position: absolute;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    line-height: 150%;
+    border-radius: 100%;
+    display: block;
+    box-sizing: border-box;
+    border: 15px solid #555;
 }
 
-.flexy img.button-image {
+.button-image {
     width: 70%;
     height: 70%;
     margin-left: 15%;
     margin-top: 15%;
     border-radius: 100px;
+}
+
+.button-image-missing{
+    opacity: 0.2;
 }

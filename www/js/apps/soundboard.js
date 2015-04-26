@@ -5,7 +5,7 @@ define(["jquery", "socketio", "howler"], function($, io, howler) {
         return $('.switch-play-remote').prop('checked');
     }
     var getTarget = function() {
-            return $('.list-group-item.active').attr('data-target');
+            return $('header button.active').attr('data-target');
         }
         // Play sound remote or in browser
     var playSoundRemote = function(soundfile) {
@@ -19,31 +19,44 @@ define(["jquery", "socketio", "howler"], function($, io, howler) {
         }
         // Play sound local
     var playSoundLocal = function(soundfile) {
-            new howler.Howl({
+            var sound = new howler.Howl({
                 urls: ['/data/' + soundfile]
             }).play();
         }
-        // User clicked on sound button
-    $(document).on("click", ".button-sound", function() {
-        var soundfile = $(this).attr("data-sound");
-        var target = getTarget();
-        if (target === "remote") {
-            playSoundRemote(soundfile);
-        } else if (target === "broadcast") {
-            playSoundBroadcast(soundfile);
-        } else if (target === "local") {
-            playSoundLocal(soundfile);
+
+    // User clicked on sound button
+    $(document).on("click", ".button", function(e) {
+        var soundfile, target, $this;
+
+        $this = $(this);
+        soundfile = $this.attr("data-sound");
+        target = getTarget();
+
+        e.preventDefault();
+        $this.toggleClass('button-clicked');
+
+        switch(target){
+            case "remote":
+                playSoundRemote(soundfile);
+                break;
+            case "broadcast":
+                playSoundBroadcast(soundfile);
+                break;
+            case "local":
+                playSoundLocal(soundfile);
+                break;
+            default:
         }
+
     });
     // Server gives us a play direction
     socket.on('play', function(soundfile) {
         playSoundLocal(soundfile);
     });
 
-    $('.list-group-item').on('click', function(e) {
-        $(this).closest(".list-group").children().removeClass('active');
+    $('header button').on('click', function(e) {
+        $('header button.active').removeClass('active')
         $(this).addClass('active');
-
         return false;
     });
 });
