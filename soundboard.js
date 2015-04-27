@@ -97,7 +97,10 @@ app.use('/', express.static(path.join(__dirname, 'www')));
 io.on('connection', function(socket) {
     socket.on('play', function(soundfile) {
         console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
+	// Broadcast play command to clients
         io.sockets.emit('play', soundfile);
+	// Play on server as well
+	playFile(soundfile);
     });
 });
 
