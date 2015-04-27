@@ -90,7 +90,6 @@ app.get('/', function(req, res) {
     });
 });
 app.use('/data', express.static(configuration.dataDir));
-app.use("/images", express.static(__dirname + '/images'));
 app.use('/', express.static(path.join(__dirname, 'www')));
 
 
