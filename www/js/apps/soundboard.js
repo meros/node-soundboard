@@ -60,7 +60,7 @@ define(["jquery", "socketio", "howler", 'goog!visualization,1.1,packages:[line]'
         return false;
     });
 
-    $.get('/data/fart-2.wav.stats', function(data) {
+    $.get('/data/fart-08.wav.stats', function(data) {
 	// Create the data table.
 
 	var lines = data.split('\n');
