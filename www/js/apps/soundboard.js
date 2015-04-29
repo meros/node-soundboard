@@ -1,4 +1,4 @@
-define(["jquery", "socketio", "howler"], function($, io, howler) {
+define(["jquery", "socketio", "howler", 'goog!visualization,1.1,packages:[line]'], function($, io, howler) {
     var socket = io();
     // Function returning true if sound should be played remote
     var playRemote = function() {
@@ -59,4 +59,28 @@ define(["jquery", "socketio", "howler"], function($, io, howler) {
         $(this).addClass('active');
         return false;
     });
-});
+
+    $.get('/data/fart-2.wav.stats', function(data) {
+	// Create the data table.
+
+	var lines = data.split('\n');
+	var rows = lines.map(function(dateStr, idx) {
+	    return [new Date(dateStr), idx];
+	});
+
+	var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('date', 'Date');
+        dataTable.addColumn('number', 'Play count');
+	dataTable.addRows(rows);
+
+        // Set chart options
+        var options = {'title':'Stats',
+                       'width':800,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.charts.Line(document.getElementById('chart_div'));
+        chart.draw(dataTable, options);
+    });
+
+ });
