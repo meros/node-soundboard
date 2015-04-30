@@ -41,7 +41,7 @@ define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualiza
             $(this).addClass('active');
             return false;
         });
-
+/*
         // Get all sounds
         var soundFiles = $('.button').map(
             function(index, element) {
@@ -99,5 +99,5 @@ define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualiza
             var chart = new google.charts.Line(document.getElementById('chart_div'));
             chart.draw(dataTable, options);
         });
-
+*/
     });
