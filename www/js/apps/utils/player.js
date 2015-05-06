@@ -1,4 +1,4 @@
-define(["jquery", "howler"], function ($, io, howler) {
+define(["jquery", "socketio", "howler"], function ($, io, howler) {
     var socket = io();
     var cache = {};
     
