@@ -1,5 +1,5 @@
 requirejs.config({
-    "baseUrl": "js/lib",
+    "baseUrl": "../js/lib",
     "shim": {
         "socketio": {
             exports: "io"
@@ -12,3 +12,5 @@ requirejs.config({
         "apps": "../apps"
     }
 });
+
+require(['apps/soundboard']);
