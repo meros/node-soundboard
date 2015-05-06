@@ -94,7 +94,13 @@ app.use('/', express.static(path.join(__dirname, 'www')));
 
 
 
-io.on('connection', function(socket) {
+io.on('connection', function(socket) {    
+    getSoundFileNames(function(names) {
+        names.forEach(function(name) {
+           socket.emit('cache', name); 
+        });        
+    });
+    
     socket.on('play', function(soundfile) {
         console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
 	// Broadcast play command to clients

@@ -35,6 +35,10 @@ define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualiza
         socket.on('play', function(soundfile) {
             player.playSoundLocal(soundfile);
         });
+        
+        socket.on('cache', function(soundfile) {
+            player.cacheSound(soundfile);
+        });
 
         $('header button').on('click', function(e) {
             $('header button.active').removeClass('active')
