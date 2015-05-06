@@ -1,4 +1,6 @@
-define(["jquery", "howler"], function($, howler) {
+define(["jquery", "howler", "socketio"], function($, howler, io) {
+    var socket = io();
+    
     return {
         // Play sound remote or in browser
         playSoundRemote: function(soundfile) {
