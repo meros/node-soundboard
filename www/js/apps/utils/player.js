@@ -1,8 +1,8 @@
-define(["jquery", "howler"], function ($, howler) {
-    return function () {
-        var cache = {};
-
-        return {
+define(["jquery", "howler"], function ($, io, howler) {
+    var socket = io();
+    var cache = {};
+    
+    return {
             // Cache sound
             cacheSound: function (soundfile) {
                 if (!(soundfile in cache)) {
@@ -27,5 +27,4 @@ define(["jquery", "howler"], function ($, howler) {
                 cache[soundfile].play();
             }
         };
-    } ();
 });
