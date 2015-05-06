@@ -89,9 +89,11 @@ app.get('/', function(req, res) {
         }));
     });
 });
-app.use('/data', express.static(configuration.dataDir));
-app.use('/', express.static(path.join(__dirname, 'www')));
 
+var oneDay = 86400000;
+
+app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
+app.use('/', express.static(path.join(__dirname, 'www')));
 
 
 io.on('connection', function(socket) {    

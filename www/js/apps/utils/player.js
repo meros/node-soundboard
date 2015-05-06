@@ -1,5 +1,4 @@
-define(["jquery", "socketio", "howler"], function ($, io, howler) {
-    var socket = io();
+define(["jquery", "howler"], function ($, howler) {
     var cache = {};
     
     return {
@@ -16,10 +15,6 @@ define(["jquery", "socketio", "howler"], function ($, io, howler) {
                 $.ajax({
                     url: '?id=' + soundfile
                 });
-            },
-            // Play sound broadcast
-            playSoundBroadcast: function (soundfile) {
-                socket.emit('play', soundfile);
             },
             // Play sound local
             playSoundLocal: function (soundfile) {

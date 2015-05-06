@@ -22,7 +22,7 @@ define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualiza
                     player.playSoundRemote(soundfile);
                     break;
                 case "broadcast":
-                    player.playSoundBroadcast(soundfile);
+                    socket.emit('play', soundfile);
                     break;
                 case "local":
                     player.playSoundLocal(soundfile);
