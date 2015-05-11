@@ -1,0 +1,13 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./sound-button.html">
+<polymer-element name="sounds-list">
+  <template>
+    <template repeat="{{sound in sounds}}">
+      <sound-button sound="{{sound}}" />
+    </template>
+  </template>
+  <script>
+    Polymer({
+    });
+  </script>
+</polymer-element>

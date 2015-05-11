@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="elements/sounds-list.html">
+    <link rel="stylesheet" href="styles/polystyle.css">
+  </head>
+  
+  <body>
+    <paper-shadow z="1">
+      <core-toolbar>
+        <img id=logo src=images/soundboard.png />
+        <span id=title flex>Telia soundboard</span>
+        <paper-tabs noink=true selected="0">
+          <paper-tab>Remote</paper-tab>
+          <paper-tab>Local</paper-tab>
+          <paper-tab>Broadcast</paper-tab>
+        </paper-tabs>
+      </core-toolbar>
+    </paper-shadow> 
+    <sounds-list />   
+  </body>
+  <script>
+    document.querySelector('sounds-list').sounds=["D", "E", "F"];
+  </script>
+</html>

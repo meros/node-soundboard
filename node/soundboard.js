@@ -93,7 +93,7 @@ app.get('/', function(req, res) {
 var oneDay = 86400000;
 
 app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
-app.use('/', express.static(path.join(__dirname, 'www')));
+app.use('/', express.static(path.join(__dirname, '../www')));
 
 
 io.on('connection', function(socket) {    

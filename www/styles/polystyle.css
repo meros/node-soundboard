@@ -1,0 +1,23 @@
+body {
+      margin: 0;
+}      
+core-toolbar, paper-tabs {
+      background-color: #00bcd4;
+      color: #fff;
+      font-family: RobotoDraft;
+}
+paper-tabs {
+      min-width: 300px;
+      height: 100%;
+}
+paper-tab {
+        float: right;
+}
+#logo {
+      height: 120%; 
+      position: absolute;
+      top: 20px;
+}
+#title {
+      margin-left: 170px;
+}

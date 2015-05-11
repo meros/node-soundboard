@@ -1,0 +1,20 @@
+{
+  "name": "www-soundboard",
+  "version": "0.0.0",
+  "homepage": "https://github.com/meros/node-soundboard",
+  "authors": [
+    "Alexander Schrab <alexander.schrab@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-ajax": "Polymer/core-ajax",
+    "paper-elements": "polymer/paper-elements"
+  }
+}
