@@ -4,6 +4,7 @@ var fs = require('fs');
 var mustache = require('mustache');
 var path = require('path');
 var walk = require('walk');
+var watchr = require('watchr');
 
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
