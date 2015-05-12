@@ -1,15 +1,32 @@
 define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualization,1.1,packages:[line]'],
     function ($, io, player, stats) {
         var socket = io();
-        
-        if ($("sounds-list").length > 0) {
 
+        if ($("sounds-list").length > 0) {
+            $(":root").on("play", "sound-button",
+                function (e) {
+                    alert('got event');
+                    var target = "remote";
+                    switch (target) {
+                        case "remote":
+                            player.playSoundRemote(this.file);
+                            break;
+                        case "broadcast":
+                            socket.emit('play', this.file);
+                            break;
+                        case "local":
+                            player.playSoundLocal(this.file);
+                            break;
+                        default:
+                    }
+                });
 
             socket.on('files', function (files) {
                 $("sounds-list").get(0).files = files;
             });
 
             socket.emit('files');
+
         } else {
             var getTarget = function () {
                 return $('header button.active').attr('data-target');

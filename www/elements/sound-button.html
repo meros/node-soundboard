@@ -8,12 +8,16 @@
         font-family: RobotoDraft;
       }
     </style>
-    <paper-button class="sound-button" raised=true>My sound: {{file}}</paper-button>
+    <paper-button class="sound-button" raised=true on-click="{{ onClick }}">My sound: {{file}}</paper-button>
   </template>
   <script>
     Polymer('sound-button', 
     {
-        file: "attribute 'file' not set"
+        file: "attribute 'file' not set",
+        onClick: function(e) {
+          alert('clicked play!');
+          this.fire('play');
+        }
     });
   </script>
 </polymer-element>
