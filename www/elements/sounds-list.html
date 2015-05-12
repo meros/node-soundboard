@@ -3,11 +3,12 @@
 <polymer-element name="sounds-list">
   <template>
     <template repeat="{{sound in sounds}}">
-      <sound-button sound="{{sound}}" />
+      <sound-button file="{{sound}}" />
     </template>
   </template>
   <script>
-    Polymer({
+    Polymer('sounds-list',
+    {
     });
   </script>
 </polymer-element>

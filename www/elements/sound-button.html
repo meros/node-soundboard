@@ -1,13 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<polymer-element name="sound-button">
+<polymer-element name="sound-button"  attributes="file">
   <template>
-    <div>My sound: {{sound}}</div>
+    <div>My sound: {{file}}</div>
   </template>
   <script>
-    Polymer({
-      properties: {
-        sound: String
-      }
+    Polymer('sound-button', 
+    {
+        file: "attribute 'file' not set"
     });
   </script>
 </polymer-element>
