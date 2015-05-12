@@ -9,6 +9,20 @@
     <link rel="import" href="bower_components/font-roboto/roboto.html">
     <link rel="import" href="elements/sounds-list.html">
     <link rel="stylesheet" href="styles/polystyle.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/require.js"></script>
+    <script>
+      require.config({
+                  paths: {
+                      //Comment out this line to go back to loading
+                      //the non-optimized main.js source file.
+                      // "js/main": "js/main-built"
+                  }
+              });
+              
+              require(["js/main"]);
+    </script>
   </head>
   
   <body>
@@ -22,10 +36,8 @@
           <paper-tab>Broadcast</paper-tab>
         </paper-tabs>
       </core-toolbar>
-    </paper-shadow> 
-    <sounds-list />   
+    </paper-shadow>
+    <sounds-list />
   </body>
-  <script>
-    document.querySelector('sounds-list').sounds=["D", "E", "F"];
-  </script>
+
 </html>

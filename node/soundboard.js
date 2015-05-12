@@ -16,7 +16,7 @@ var express = require('express'),
     server = http.createServer(app).listen(configuration.listenPort),
     io = require('socket.io').listen(server);
 
-String.prototype.endsWith = function(suffix) {
+String.prototype.endsWith = function (suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
@@ -26,7 +26,7 @@ function getSoundFileNames(done) {
         followLinks: false
     });
 
-    walker.on('file', function(root, stat, next) {
+    walker.on('file', function (root, stat, next) {
         if (stat.name.endsWith(".wav")) {
             files.push(stat.name);
         }
@@ -34,7 +34,7 @@ function getSoundFileNames(done) {
         next();
     });
 
-    walker.on('end', function() {
+    walker.on('end', function () {
         done(files);
     });
 }
@@ -43,24 +43,24 @@ function getFileFullData(file, done) {
     var imgBasePath = configuration.dataDir;
     var imgBaseName = file.replace(/\.[^/.]+$/, "");
 
-    var potentialImageFiles = imageTypes.map(function(type) {
+    var potentialImageFiles = imageTypes.map(function (type) {
         return imgBaseName + type;
     });
 
 
     async.filter(
         potentialImageFiles,
-        function(potentialFile, callback) {
+        function (potentialFile, callback) {
             fs.exists(path.join(imgBasePath, potentialFile), callback);
         },
-        function(existingImageFiles) {
+        function (existingImageFiles) {
             result = {
                 name: file
             };
             result.imgName = existingImageFiles[0] || '';
             done(null, result);
         }
-    )
+        )
 }
 
 function playFile(file) {
@@ -69,7 +69,7 @@ function playFile(file) {
 }
 
 function getFilesFullData(callback) {
-    getSoundFileNames(function(filesNames) {
+    getSoundFileNames(function (filesNames) {
         async.map(
             filesNames,
             getFileFullData,
@@ -77,12 +77,12 @@ function getFilesFullData(callback) {
     });
 }
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     if (!!req.query.id) {
         playFile(req.query.id);
     }
 
-    getFilesFullData(function(error, result) {
+    getFilesFullData(function (error, result) {
         res.send(mustache.to_html(htmlTemplate, {
             pageTitle: configuration.pageTitle,
             files: result
@@ -96,19 +96,18 @@ app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
 app.use('/', express.static(path.join(__dirname, '../www')));
 
 
-io.on('connection', function(socket) {    
-    getSoundFileNames(function(names) {
-        names.forEach(function(name) {
-           socket.emit('cache', name); 
-        });        
-    });
-    
-    socket.on('play', function(soundfile) {
+io.on('connection', function (socket) {
+    socket.on('play', function (soundfile) {
         console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
-	// Broadcast play command to clients
+        // Broadcast play command to clients
         io.sockets.emit('play', soundfile);
-	// Play on server as well
-	playFile(soundfile);
+        // Play on server as well
+        playFile(soundfile);
+    });
+
+    socket.on('files', function () {
+        console.log("Requesting files!");
+        getSoundFileNames(function (files) { io.sockets.emit('files', files); });
     });
 });
 
