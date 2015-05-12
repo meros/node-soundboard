@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<polymer-element name="play-target-tabs" attributes="target selected">
+  <template>
+    <style>
+      paper-tabs {
+        height: 100%
+      }
+    </style>
+    <paper-tabs id="tabs" noink=true selected="0">
+      <paper-tab>Remote</paper-tab>
+      <paper-tab>Local</paper-tab>
+      <paper-tab>Broadcast</paper-tab>
+    </paper-tabs>
+  </template>
+  <script>
+    Polymer('play-target-tabs',
+    {
+        files: [],
+        onPlay: function(file) {},
+        getTarget: function() {
+          switch(Number(this.$.tabs.selected)) {
+            case 0:
+            return "remote";
+            case 1:
+            return "local";
+            case 2:
+            return "broadcast";
+          }
+          
+          return "";
+        }
+    });
+  </script>
+</polymer-element>

@@ -1,23 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<polymer-element name="sound-button"  attributes="file">
+<polymer-element name="sound-button" attributes="file onPlay">
   <template>
-    <style>
-      .sound-button {
-        background: red;
-        font-family: RobotoDraft;
-      }
-    </style>
-    <paper-button class="sound-button" raised=true on-click="{{ onClick }}">My sound: {{file}}</paper-button>
+    <div>
+      <paper-button class="sound-button" raised=true on-click="{{ onClick }}">My sound: {{file}}</paper-button>
+    </div>
   </template>
   <script>
     Polymer('sound-button', 
     {
         file: "attribute 'file' not set",
-        onClick: function(e) {
-          alert('clicked play!');
-          this.fire('play');
-        }
+        onClick: function() {
+          this.onPlay(this.file);
+        },        
+        onPlay: function(file) { }
     });
   </script>
 </polymer-element>

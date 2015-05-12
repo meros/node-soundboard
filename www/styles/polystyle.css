@@ -1,23 +1,35 @@
-body {
-      margin: 0;
-}      
-core-toolbar, paper-tabs {
-      background-color: #00bcd4;
-      color: #fff;
-      font-family: RobotoDraft;
+body { margin: 0 }
+core-toolbar,
+play-target-tabs {
+    background-color: #00bcd4;
+    color: #fff;
+    font-family: RobotoDraft;
 }
-paper-tabs {
-      min-width: 300px;
-      height: 100%;
+@media (max-width: 700px) { 
+    #logo { display: none }
+    #title { display: none }
+    #play-target {
+        height: 100%;
+        width: 100%;
+    }    
+    #sounds-list { margin: 50px; }
 }
-paper-tab {
+@media (min-width: 700px) { 
+    #play-target {
         float: right;
+        height: 100%;
+        min-width: 300px;
+    }
+    sound-button {
+        background: #00bcd4;
+        font-family: RobotoDraft;
+    }
+    #logo {
+        height: 120%;
+        position: absolute;
+        top: 20px;
+    }
+    #title { margin-left: 170px }
+    #sounds-list { margin: 50px; }
 }
-#logo {
-      height: 120%; 
-      position: absolute;
-      top: 20px;
-}
-#title {
-      margin-left: 170px;
-}
+

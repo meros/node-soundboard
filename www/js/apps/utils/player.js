@@ -9,13 +9,7 @@ define(["jquery", "howler"], function ($, howler) {
                         urls: ['/data/' + soundfile]
                     });
                 }
-            },          
-            // Play sound remote or in browser
-            playSoundRemote: function (soundfile) {
-                $.ajax({
-                    url: '?id=' + soundfile
-                });
-            },
+            },                  
             // Play sound local
             playSoundLocal: function (soundfile) {
                 this.cacheSound(soundfile);

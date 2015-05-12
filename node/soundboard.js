@@ -97,17 +97,27 @@ app.use('/', express.static(path.join(__dirname, '../www')));
 
 
 io.on('connection', function (socket) {
-    socket.on('play', function (soundfile) {
+    socket.on('playBroadcast', function (soundfile) {
         console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
         // Broadcast play command to clients
         io.sockets.emit('play', soundfile);
         // Play on server as well
         playFile(soundfile);
     });
+    
+    socket.on('playRemote', function (soundfile) {
+        console.log("Playing remote " + soundfile);
+        playFile(soundfile);
+    });
 
-    socket.on('files', function () {
+    socket.on('getFiles', function () {
         console.log("Requesting files!");
         getSoundFileNames(function (files) { io.sockets.emit('files', files); });
+    });
+    
+    socket.on('getTitle', function () {
+        console.log("Requesting title!");
+        getSoundFileNames(function (files) { io.sockets.emit('title', configuration.pageTitle); });
     });
 });
 

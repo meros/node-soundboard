@@ -2,42 +2,28 @@
 <html>
   
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      
     <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-    <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
     <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/font-roboto/roboto.html">
     <link rel="import" href="elements/sounds-list.html">
+    <link rel="import" href="elements/play-target-tabs.html">
     <link rel="stylesheet" href="styles/polystyle.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/require.js"></script>
-    <script>
-      require.config({
-                  paths: {
-                      //Comment out this line to go back to loading
-                      //the non-optimized main.js source file.
-                      // "js/main": "js/main-built"
-                  }
-              });
-              
-              require(["js/main"]);
-    </script>
-  </head>
-  
+    <script data-main="js/main" src="js/require.js"></script>    
+  </head>  
   <body>
     <paper-shadow z="1">
       <core-toolbar>
         <img id=logo src=images/soundboard.png />
-        <span id=title flex>Telia soundboard</span>
-        <paper-tabs noink=true selected="0">
-          <paper-tab>Remote</paper-tab>
-          <paper-tab>Local</paper-tab>
-          <paper-tab>Broadcast</paper-tab>
-        </paper-tabs>
+        <span id=title flex></span>
+        <play-target-tabs id="play-target" />
       </core-toolbar>
     </paper-shadow>
-    <sounds-list />
+    <sounds-list id="sounds-list" />
   </body>
 
 </html>

@@ -1,15 +1,22 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="./sound-button.html">
-<polymer-element name="sounds-list" attributes="files">
+<polymer-element name="sounds-list" attributes="files" attributes=onPlay>
   <template>
-    <template repeat="{{file in files}}">
-      <sound-button file="{{file}}" />
-    </template>
+    <style>
+      :host { display: block; }
+      sound-button { margin: 10px; }
+    </style>
+    <div>
+      <template repeat="{{file in files}}">
+        <sound-button file="{{file}}" onPlay="{{onPlay}}" />
+      </template>
+    </div>
   </template>
   <script>
     Polymer('sounds-list',
     {
-        files: []
+        files: [],
+        onPlay: function(file) {}
     });
   </script>
 </polymer-element>
