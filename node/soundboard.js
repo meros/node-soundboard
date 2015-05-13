@@ -113,7 +113,7 @@ io.on('connection', function (socket) {
 
     socket.on('getFiles', function () {
         console.log("Requesting files!");
-        getSoundFileNames(function (files) { io.sockets.emit('files', files); });
+        getFilesFullData(function (error, files) { io.sockets.emit('files', files); });
     });
     
     socket.on('getTitle', function () {

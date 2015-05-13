@@ -33,8 +33,8 @@ define(["jquery", "socketio", "./utils/player", "./utils/stats", 'goog!visualiza
             soundsList.onPlay = function (file) {
                 playFile(file, document.querySelector("#play-target").getTarget());
             };
-            socket.on('files', function (files) {
-                soundsList.files = files;
+            socket.on('files', function (sounds) {
+                soundsList.sounds = sounds;
             });
             
             socket.on('title', function (title) {
