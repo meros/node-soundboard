@@ -113,12 +113,12 @@ io.on('connection', function (socket) {
 
     socket.on('getFiles', function () {
         console.log("Requesting files!");
-        getFilesFullData(function (error, files) { io.sockets.emit('files', files); });
+        getFilesFullData(function (error, files) { socket.emit('files', files); });
     });
     
     socket.on('getTitle', function () {
         console.log("Requesting title!");
-        getSoundFileNames(function (files) { io.sockets.emit('title', configuration.pageTitle); });
+        getSoundFileNames(function (files) { socket.emit('title', configuration.pageTitle); });
     });
 });
 

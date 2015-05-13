@@ -1,14 +1,17 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-image/core-image.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-<polymer-element name="sound-button" attributes="sound onPlay">
+  <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<polymer-element name="sound-button" attributes="sound onPlay" on-mouseover="{{onHoverIn}}" on-mouseout="{{onHoverOut}}">
   <template>
     <style>
       :host { display: block; }
       core-image { display: block; }
     </style>
-    <paper-shadow z=1>
-      <core-image width=200px height=200px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}" on-click="{{ onClick }}"></core-image>
+    <paper-shadow id="shadow" z=1>
+      <core-image width=150px height=150px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}"
+      on-click="{{ onClick }}"></core-image>
+    <paper-ripple fit/>
     </paper-shadow>
   </template>
   <script>
@@ -25,6 +28,12 @@
           }
           
           return "data/" + file;
+        },
+        onHoverIn: function() {
+          this.$.shadow.setZ(2);
+        },
+        onHoverOut: function() {
+          this.$.shadow.setZ(1);
         }
     });
   </script>
