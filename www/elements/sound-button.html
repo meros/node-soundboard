@@ -1,18 +1,17 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-image/core-image.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-  <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-<polymer-element name="sound-button" attributes="sound onPlay" on-mouseover="{{onHoverIn}}" on-mouseout="{{onHoverOut}}">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<polymer-element name="sound-button" attributes="sound onPlay" on-mouseover="{{onHoverIn}}" on-mouseout="{{onHoverOut}}"
+on-click="{{ onClick }}">
   <template>
     <style>
       :host { display: block; }
       core-image { display: block; }
     </style>
     <paper-shadow id="shadow" z=1>
-      <core-image width=150px height=150px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}"
-      on-click="{{ onClick }}"></core-image>
-    <paper-ripple fit/>
-    </paper-shadow>
+      <core-image width=150px height=150px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}"></core-image>
+      <paper-ripple fit/></paper-shadow>
   </template>
   <script>
     Polymer('sound-button', 
