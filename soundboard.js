@@ -1,14 +1,11 @@
 var async = require('async')
 var exec = require('child_process').exec;
 var fs = require('fs');
-var mustache = require('mustache');
 var path = require('path');
 var walk = require('walk');
-var watchr = require('watchr');
 
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
-var htmlTemplate = fs.readFileSync("templates/index.mustache", "utf8");
 
 // Set up express and io
 var express = require('express'),
@@ -78,23 +75,10 @@ function getFilesFullData(callback) {
     });
 }
 
-app.get('/', function (req, res) {
-    if (!!req.query.id) {
-        playFile(req.query.id);
-    }
-
-    getFilesFullData(function (error, result) {
-        res.send(mustache.to_html(htmlTemplate, {
-            pageTitle: configuration.pageTitle,
-            files: result
-        }));
-    });
-});
-
 var oneDay = 86400000;
 
 app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
-app.use('/', express.static(path.join(__dirname, '../www')));
+app.use('/', express.static(path.join(__dirname, './www')));
 
 
 io.on('connection', function (socket) {

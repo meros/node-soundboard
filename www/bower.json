@@ -16,8 +16,11 @@
   "dependencies": {
     "core-ajax": "Polymer/core-ajax",
     "paper-elements": "polymer/paper-elements",
-    "core-elements": "Polymer/core-elements#^0.5",
-    "core-image": "Polymer/core-image#^0.5",
-    "paper-ripple": "Polymer/paper-ripple#^0.5"
+    "core-elements": "Polymer/core-elements",
+    "core-image": "Polymer/core-image",
+    "paper-ripple": "Polymer/paper-ripple"
+  },
+  "resolutions": {
+    "webcomponentsjs": "0.7.0"
   }
 }
