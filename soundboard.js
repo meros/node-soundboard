@@ -77,6 +77,12 @@ function getFilesFullData(callback) {
 
 var oneDay = 86400000;
 
+app.get('/play/*', function (req, res) {
+  var soundfile = path.basename(req.path);
+  playFile(soundfile);  
+  res.send("Playing " + soundfile);
+});
+
 app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
 app.use('/', express.static(path.join(__dirname, './www')));
 
