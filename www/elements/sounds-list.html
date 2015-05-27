@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="./sound-button.html">
-<polymer-element name="sounds-list" attributes="sounds" attributes=onPlay>
+<polymer-element name="sounds-list" attributes="sounds onPlay filter">
   <template>
     <style>
       :host { display: block; }
@@ -12,8 +13,9 @@
         justify-content: center;
       }
     </style>
+    <paper-input id=filter on-keyup="{{onFilterKeyUp}}" label="Filter (regex)"></paper-input><br />
     <div class=flex-container>
-      <template repeat="{{sound in sounds}}">
+      <template repeat="{{sound in filteredSounds}}">
         <sound-button sound="{{sound}}" onPlay="{{onPlay}}" />
       </template>
     </div>
@@ -21,7 +23,26 @@
   <script>
     Polymer('sounds-list',
     {
-        files: [],
+        onFilterKeyUp: function() {
+          this.filter = this.$['filter'].value; },
+        filterSounds: function() {    
+          var filter = this.filter;      
+          return this.sounds.filter(function(sound) {
+            return sound.name.match(new RegExp(filter, "i"));
+          });
+        },
+
+        sounds: [],
+        soundsChanged: function() {
+          this.filteredSounds = this.filterSounds();
+        },
+        filter: "",
+        filterChanged: function() {
+          this.filteredSounds = this.filterSounds();         
+        },
+        
+        filteredSounds: [],
+
         onPlay: function(file) {}
     });
   </script>
