@@ -3,7 +3,8 @@
   
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script data-main="js/main" src="js/require.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
@@ -11,20 +12,17 @@
     <link rel="import" href="elements/sounds-list.html">
     <link rel="import" href="elements/play-target-tabs.html">
     <link rel="stylesheet" href="styles/polystyle.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script data-main="js/main" src="js/require.js"></script>    
-  </head>  
+  </head>
+
   <body>
     <paper-shadow z="1">
       <core-toolbar>
         <img id=logo src=images/soundboard.png />
         <span id=title flex></span>
-        <play-target-tabs id="play-target" />            
-      </core-toolbar>      
+        <play-target-tabs id="play-target" />
+      </core-toolbar>
     </paper-shadow>
     <sounds-list id="sounds-list" />
-
   </body>
 
 </html>
