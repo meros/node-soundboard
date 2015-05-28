@@ -3,6 +3,7 @@ var exec = require('child_process').exec;
 var fs = require('fs');
 var path = require('path');
 var walk = require('walk');
+var watch = require('node-watch');
 
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
@@ -110,6 +111,11 @@ io.on('connection', function (socket) {
         console.log("Requesting title!");
         getSoundFileNames(function (files) { socket.emit('title', configuration.pageTitle); });
     });
+});
+
+watch(configuration.dataDir, function() {
+   console.log('Data dir updated, pushing sound files!');
+   getFilesFullData(function (error, files) { io.emit('files', files); });
 });
 
 console.log('Soundboard is starting on port http://localhost:' + configuration.listenPort + '...');
