@@ -79,9 +79,9 @@ function getFilesFullData(callback) {
 var oneDay = 86400000;
 
 app.get('/play/*', function (req, res) {
-  var soundfile = path.basename(req.path);
-  playFile(soundfile);  
-  res.send("Playing " + soundfile);
+    var soundfile = path.basename(req.path);
+    playFile(soundfile);
+    res.send("Playing " + soundfile);
 });
 
 app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
@@ -96,7 +96,7 @@ io.on('connection', function (socket) {
         // Play on server as well
         playFile(soundfile);
     });
-    
+
     socket.on('playRemote', function (soundfile) {
         console.log("Playing remote " + soundfile);
         playFile(soundfile);
@@ -106,16 +106,18 @@ io.on('connection', function (socket) {
         console.log("Requesting files!");
         getFilesFullData(function (error, files) { socket.emit('files', files); });
     });
-    
+
     socket.on('getTitle', function () {
         console.log("Requesting title!");
         getSoundFileNames(function (files) { socket.emit('title', configuration.pageTitle); });
     });
 });
 
-watch(configuration.dataDir, function() {
-   console.log('Data dir updated, pushing sound files!');
-   getFilesFullData(function (error, files) { io.emit('files', files); });
+watch(configuration.dataDir, function (filename) {
+    if (filename.indexOf(".stats", this.length - ".stats".length) === -1) {
+        console.log('Data dir updated, pushing sound files!');
+        getFilesFullData(function (error, files) { io.emit('files', files); });
+    }
 });
 
 console.log('Soundboard is starting on port http://localhost:' + configuration.listenPort + '...');
