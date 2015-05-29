@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<dom-module id="sounds-button">
+<style> 
+</style>
+  <template>    
+    <iron-image on-click="onClick" height="{{size}}" width="{{size}}" src="{{toUrl(sound.imgName)}}" sizing="cover"></iron-image>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'sounds-button',
+
+    properties: {
+       sound: Object,
+       size: {
+         type: Number,
+         value: 150
+       }
+    },
+    
+    onClick: function(e) {
+      this.fire("play", this.sound);
+    },      
+    
+    toUrl: function (imageName) {
+      if (imageName.length === 0) {
+        return "/images/wave.svg";
+      }
+      
+      return "/data/" + imageName;
+    }
+  });
+</script>

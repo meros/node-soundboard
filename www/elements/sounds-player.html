@@ -1,28 +1,42 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
-<dom-module id="sounds-player">
-  <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-    }
-
-    .author img {
-      float: left;
-      margin-right: 5px;
-      max-height: 100px;
-      max-width: 100px;
-    }
-  </style>
-  <template>
-	  player...   
-  </template>
-</dom-module>
+<script src="//cdn.jsdelivr.net/howler.js/1.1.8/howler.min.js"></script>
+<dom-module id="sounds-player"></dom-module>
 <script>
   Polymer({
+    properties: {
+       target: {
+         type: String,
+         value: "broadcast"
+       }       
+    },
+    
     is: 'sounds-player', 
-    playLocal: function(file) {
-      alert("Play local: " + file);
-    }   
+    play: function(file) {
+      switch(this.target) {
+        case "remote":
+          this.fire("socket-emit", {key: "playRemote", value: file});
+        break
+        case "broadcast":
+          this.fire("socket-emit", {key: "playBroadcast", value: file});
+        break;
+        case "local":
+          this.playSoundLocal(file);
+        break;       
+      }
+    }, 
+    
+    cache: {},
+    
+    // Play sound local
+    playSoundLocal: function (soundfile) {
+      this.cacheSound(soundfile);
+      this.cache[soundfile].play();
+    },
+    
+    cacheSound: function (soundfile) {
+      if (!(soundfile in this.cache)) {
+        this.cache[soundfile] = new Howl({ urls: ['/data/' + soundfile] });
+      }
+    }                  
   });
 </script>

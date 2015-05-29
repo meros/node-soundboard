@@ -1,0 +1,55 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<dom-module id="sounds-target-tabs">
+  <template>
+    <style>
+      :host {
+        height: 100%;       
+      }
+      paper-tabs {
+        min-width: 320px;
+        font-family: Roboto, Noto, sans-serif;
+      }
+    </style>
+    <paper-tabs on-selected-changed="onSelectedChanged" id="tabs" noink=true selected=0>
+      <paper-tab>Remote</paper-tab>
+      <paper-tab>Local</paper-tab>
+      <paper-tab>Broadcast</paper-tab>
+    </paper-tabs>
+  </template>
+</dom-module>
+<script>
+  Polymer(
+    {
+        is: 'sounds-target-tabs',
+        
+        ready: function() {
+          this.updateTarget();
+        },
+
+        properties: {
+          target: {
+            type: String,
+            notify: true
+            }
+        },
+        
+        onSelectedChanged: function() {
+          this.updateTarget();
+        },
+         
+        updateTarget: function() {
+          switch (this.$['tabs'].selected) {
+            case 0:
+            this.target = "remote";
+            break;
+            case 1:
+            this.target = "local";
+            break;
+            case 2:
+            this.target = "broadcast";
+            break;
+          }  
+        }    
+    });
+</script>

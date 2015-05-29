@@ -1,42 +1,43 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="./sound-button.html">
-<dom-module id="sounds-list" attributes="sounds onPlay filter">
+<link rel="import" href="sounds-button.html">
+<dom-module id="sounds-list">
+  <style>
+    :host { display: block; }
+    sounds-button { margin: 10px; }
+    div.flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
   <template>
-    <style>
-      :host { display: block; }
-      sound-button { margin: 10px; }
-      div.flex-container {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
-    <paper-input id=filter on-keyup="{{onFilterKeyUp}}" label="Filter (regex)"></paper-input><br />
-    <div class=flex-container>
-      <template repeat="{{sound in filtered(sounds, filter)}}">
-        <sound-button sound="{{sound}}" onPlay="{{onPlay}}" />
+    <div class="flex-container">
+      <template is="dom-repeat" items="{{filtered(sounds, filter)}}">
+        <sounds-button sound="{{item}}"></sounds-button>
       </template>
     </div>
   </template>
 </dom-module>
-
 <script>
-    Polymer('sounds-list',
-    {
-        onFilterKeyUp: function() {
-          this.filter = this.$['filter'].value; },
-          
-        filtered: function(sounds, filter) {    
-          return sounds.filter(function(sound) {
-            return sound.name.match(new RegExp(filter, "i"));
-          });
-        },
+  Polymer({
 
-        sounds: [],
-        filter: "",
+    is: 'sounds-list',
 
-        onPlay: function(file) {}
-    });
+    properties: {
+       sounds: Array,
+       filter: {
+         type: String,
+         value: ""
+       }
+    },
+    
+    filtered: function() {
+      var that = this;
+      var filtered = this.sounds.filter(function(sound) {
+        return sound.name.match(new RegExp(that.filter, "i"));
+      });
+      return filtered;
+    }
+  });
 </script>

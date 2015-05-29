@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="sounds-target-tabs.html">
+<dom-module id="sounds-toolbar">
+  <style>
+    :host,
+    paper-input,
+    paper-toolbar,
+    sounds-target-tabs {
+      background-color: #00bcd4;
+      color: #fff;
+    }
+    }
+  </style>
+  <template>
+    <paper-toolbar>
+      <paper-input on-value-changed="onFilterChanged" label="Filter (RegExp)"></paper-input>
+      <sounds-target-tabs on-target-changed="onTargetChanged"></sounds-target-tabs>
+    </paper-toolbar>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'sounds-toolbar',
+    onTargetChanged: function(e) {
+      this.fire("target", e.detail.value);
+    },
+    
+    onFilterChanged: function(e) {
+      this.fire("filter", e.detail.value);
+    }
+  });
+</script>

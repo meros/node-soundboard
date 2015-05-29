@@ -1,59 +1,49 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="sounds-player.html">
 <link rel="import" href="sounds-socket.html">
+<link rel="import" href="sounds-list.html">
+<link rel="import" href="sounds-target-tabs.html">
+<link rel="import" href="sounds-toolbar.html">
 <dom-module id="sounds-app">
   <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-    }
-
-    .author img {
-      float: left;
-      margin-right: 5px;
-      max-height: 100px;
-      max-width: 100px;
-    }
   </style>
   <template>
-    <sounds-player id="player"></sounds-player>
-    <sounds-socket on-sounds="onSounds" on-title="onTitle"></sounds-socket>sounds:
-    <template is="dom-repeat" items="{{sounds}}">sound:
-      <span>{{item.name}}</span>
-      <br/>
-    </template>
+    <!-- Hidden elements -->
+    <sounds-player id="player" on-socket-emit="onSocketEmit"></sounds-player>
+    <sounds-socket id="socket" on-sounds="onSounds" on-title="onTitle"></sounds-socket>
+    
+    <!-- Visible elements -->
+    <sounds-toolbar on-target="onTarget" on-filter="onFilter"></sounds-toolbar>
+    <sounds-list id="list" on-play="onPlay"></sounds-list>
   </template>
 </dom-module>
 <script>
   Polymer({
 
     is: 'sounds-app',
-
-    properties: {
-       sounds: Array
-    },
-
-    // Element Lifecycle
-    ready: function() {
-    },
-
-    attached: function() {
-    },
-
-    detached: function() {
-    },
-    
-    onClick: function() {
-      this.$['player'].playLocal("asdf");
-    },
     
     onSounds: function(e) {
-      this.sounds=e.detail;
+      this.$['list'].sounds=e.detail;
     },
 
     onTitle: function(e) {
      document.title = e.detail;      
-    }
+    },
     
+    onPlay: function(e) {
+      this.$['player'].play(e.detail.name);
+    },
+    
+    onSocketEmit: function(e) {
+      this.$['socket'].socket.emit(e.detail.key, e.detail.value);
+    },
+    
+    onTarget: function(e) {
+      this.$['player'].target = e.detail;
+    },
+    
+    onFilter: function(e) {
+      this.$['list'].filter = e.detail;
+    }
   });
 </script>
