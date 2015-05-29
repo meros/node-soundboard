@@ -32,10 +32,9 @@
        }
     },
     
-    filtered: function() {
-      var that = this;
+    filtered: function(sound, filter) {
       var filtered = this.sounds.filter(function(sound) {
-        return sound.name.match(new RegExp(that.filter, "i"));
+        return sound.name.match(new RegExp(filter, "i"));
       });
       return filtered;
     }

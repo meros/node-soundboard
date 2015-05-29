@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="sounds-target-tabs.html">
 <dom-module id="sounds-toolbar">
   <style>
@@ -10,70 +12,97 @@
       color: #fff;
       display: block;
       height: 64px;
+      width: 100%;
       box-shadow: 0px 0px 5px #888888;
     }    
-                 
-@media (max-width: 700px) { 
+    
     .content {
-      display: none;
-      height: 100%
+      float: left;
+      display: inline-block;
+      height: 100%;
     } 
     
-    sounds-target-tabs.content {
-        display: inline-block;
-        height: 100%;
-        width: 100%;
-    }    
-}
-
-@media (min-width: 700px) {
-    .content {
-      display: inline-block;
-      height: 100%
-    }
-     
-    input {
-      color: #fff;
-            font-family: Roboto;
-      font-size: 17px;
-              border: none;
-        background-color: transparent;
-      padding: 0%;
-      float: right;     
-    }
-    
-    input:focus{
-      outline: 0;
-    }
-
-    
-    sounds-target-tabs {
-      min-width: 300px;
+    .right-adjust {
       float: right;
     }
     
-    img.content {
-      position: absolute;
-      height: 100px;
+    .search-icon {
+      box-sizing: border-box;
+      width: 50px;
+      padding: 5px;
     }
     
-    span.content {
-      margin-left: 170px;
+    .target-tabs {
+      min-width: 270px;
+    }
+    
+    .search-input {
+      color: #fff;
       font-family: Roboto;
       font-size: 26px;
-      vertical-align: middle;
-      margin-top: 17px;
+
+      display: inline-block;
+      box-sizing: border-box;
+      width: 80%;
+      background: transparent;
+      border: none;
+      margin-left: 10px;
     }
- 
-}
-  </style>
+    
+    .search-input:focus {
+      outline: 0;
+    }
+    
+    ::-webkit-input-placeholder {
+      color: #fff;
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+      color: #fff;  
+    } 
+
+    ::-moz-placeholder {  /* Firefox 19+ */
+      color: #fff;  
+    }
+
+    :-ms-input-placeholder {  
+      color: #fff;  
+    }
+
+    .title {
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+    }
+    
+    .title-inner {
+      color: #fff;
+      font-family: Roboto;
+      font-size: 26px;
+    }
+    
+    .logo {
+      box-sizing: border-box;
+      padding: 5px;
+    }
+    
+   </style>
   <template>
     <div class="toolbar">
-      <img class="content" src="/images/soundboard.png">
-      <span class="content">{{soundboardTitle}}</span>
-      <sounds-target-tabs class="content" on-target-changed="onTargetChanged"></sounds-target-tabs>
-      <input id="filter" class="content" on-keyup="onFilterChanged" placeholder="Filter (RegExp)"></input>
+      <template is="dom-if" if="{{!search}}">        
+        <img class="logo content" src="/images/soundboard.png"></img>
+        <div class="title content"><span class="title-inner">{{soundboardTitle}}</span></div>
+
+        <iron-icon class="search-icon content right-adjust" on-click="onToggleSearch" icon="search"></iron-icon>
+        <sounds-target-tabs class="target-tabs content right-adjust" on-target-changed="onTargetChanged"></sounds-target-tabs>
+      </template>
+      <template is="dom-if" if="{{search}}">
+        <iron-icon class="search-icon content" on-click="onToggleSearch" icon="search"></iron-icon>
+        <input id="filter" class="search-input content" on-keyup="onFilterChanged" placeholder="Filter (RegExp)"></input>
+      </template>      
     </div>
+    <br>
   </template>
 </dom-module>
 <script>
@@ -85,6 +114,10 @@
        soundboardTitle: {
          type: String,
          value: "broadcast"
+       },
+       search: {
+         type: Boolean,
+         value: false
        }       
     },
     
@@ -92,8 +125,12 @@
       this.fire("target", e.detail.value);
     },
     
-    onFilterChanged: function(e) {
-      this.fire("filter", this.$['filter'].value);
+    onFilterChanged: function(e) {      
+      this.fire("filter", this.$$('#filter').value);
+    },
+        
+    onToggleSearch: function() {
+      this.search = !this.search;
     }
   });
 </script>
