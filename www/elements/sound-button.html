@@ -1,39 +1,50 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-image/core-image.html">
-<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-<polymer-element name="sound-button" attributes="sound onPlay" on-mouseover="{{onHoverIn}}" on-mouseout="{{onHoverOut}}"
-on-click="{{ onClick }}">
+<dom-module id="sound-button" on-mouseover="{{onHoverIn}}" on-mouseout="{{onHoverOut}}" on-click="{{onClick}}">
   <template>
     <style>
       :host { display: inline-block; }
-      core-image { display: block; }
+      iron-image { display: block; }
     </style>
-    <paper-shadow id="shadow" z=1>
-      <core-image width=150px height=150px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}"></core-image>
-      <paper-ripple fit/></paper-shadow>
+    <iron-image width=150px height=150px sizing=cover preload=true placeholder="images/wave.svg" src="{{fileToUrl(sound.imgName)}}">
+      </core-image>
+      <paper-ripple fit/>
   </template>
-  <script>
-    Polymer('sound-button', 
-    {
-        sound: "attribute 'sound' not set",
-        onClick: function() {
+</dom-module>
+<script>
+      Polymer({
+        is: 'sound-button',
+
+        listeners: {
+          'tap': 'regularTap',
+          'special.tap': 'specialTap'
+        },
+
+        properties: {
+
+          sound: {
+            type: Object,
+            value: "Not set"
+          },
+          onPlay: function (file) { },
+        },
+        onClick: function () {
           this.onPlay(this.sound.name);
-        },        
-        onPlay: function(file) { },
-        fileToUrl: function(file) {
+        },
+
+        fileToUrl: function (file) {
           if (file === "") {
             return "images/wave.svg";
           }
-          
+
           return "data/" + file;
         },
-        onHoverIn: function() {
+        onHoverIn: function () {
           this.$.shadow.setZ(2);
         },
-        onHoverOut: function() {
+        onHoverOut: function () {
           this.$.shadow.setZ(1);
         }
-    });
-  </script>
-</polymer-element>
+      });
+</script>

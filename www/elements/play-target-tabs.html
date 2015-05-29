@@ -1,6 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
-<polymer-element name="play-target-tabs" attributes="target selected">
+<dom-module id="play-target-tabs" attributes="target selected">
   <template>
     <style>
       paper-tabs {
@@ -13,8 +13,9 @@
       <paper-tab>Broadcast</paper-tab>
     </paper-tabs>
   </template>
-  <script>
-    Polymer('play-target-tabs',
+</dom-module>
+<script>
+  Polymer('play-target-tabs',
     {
         files: [],
         onPlay: function(file) {},
@@ -31,5 +32,4 @@
           return "";
         }
     });
-  </script>
-</polymer-element>
+</script>

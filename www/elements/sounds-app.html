@@ -1,0 +1,53 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="sounds-app">
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+
+    .author img {
+      float: left;
+      margin-right: 5px;
+      max-height: 100px;
+      max-width: 100px;
+    }
+  </style>
+  <template>
+    <h1>&lt;sounds-app&gt;</h1>
+    <content></content>
+    <p class="author">
+      <img src="{{author.image}}">Cheers,
+      <br/>
+      <span class="name">{{author.name}}</span>
+    </p>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'sounds-app',
+
+    properties: {
+       author: {
+        type: Object,
+        value: function() {
+          return {
+            name:  'Dimitri Glazkov',
+            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
+          };
+        }
+      },
+    },
+
+    // Element Lifecycle
+    ready: function() {
+    },
+
+    attached: function() {
+    },
+
+    detached: function() {
+    }
+  });
+</script>
