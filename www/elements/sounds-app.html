@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="sounds-player.html">
+<link rel="import" href="sounds-socket.html">
 <dom-module id="sounds-app">
   <style>
     :host {
@@ -14,13 +16,12 @@
     }
   </style>
   <template>
-    <h1>&lt;sounds-app&gt;</h1>
-    <content></content>
-    <p class="author">
-      <img src="{{author.image}}">Cheers,
+    <sounds-player id="player"></sounds-player>
+    <sounds-socket on-sounds="onSounds" on-title="onTitle"></sounds-socket>sounds:
+    <template is="dom-repeat" items="{{sounds}}">sound:
+      <span>{{item.name}}</span>
       <br/>
-      <span class="name">{{author.name}}</span>
-    </p>
+    </template>
   </template>
 </dom-module>
 <script>
@@ -29,15 +30,7 @@
     is: 'sounds-app',
 
     properties: {
-       author: {
-        type: Object,
-        value: function() {
-          return {
-            name:  'Dimitri Glazkov',
-            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-          };
-        }
-      },
+       sounds: Array
     },
 
     // Element Lifecycle
@@ -48,6 +41,19 @@
     },
 
     detached: function() {
+    },
+    
+    onClick: function() {
+      this.$['player'].playLocal("asdf");
+    },
+    
+    onSounds: function(e) {
+      this.sounds=e.detail;
+    },
+
+    onTitle: function(e) {
+     document.title = e.detail;      
     }
+    
   });
 </script>

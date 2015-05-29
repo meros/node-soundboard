@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="sounds-player">
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+
+    .author img {
+      float: left;
+      margin-right: 5px;
+      max-height: 100px;
+      max-width: 100px;
+    }
+  </style>
+  <template>
+	  player...   
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'sounds-player', 
+    playLocal: function(file) {
+      alert("Play local: " + file);
+    }   
+  });
+</script>
