@@ -13,7 +13,7 @@
     <sounds-socket id="socket" on-sounds="onSounds" on-title="onTitle"></sounds-socket>
     
     <!-- Visible elements -->
-    <sounds-toolbar on-target="onTarget" on-filter="onFilter"></sounds-toolbar>
+    <sounds-toolbar id="toolbar" on-target="onTarget" on-filter="onFilter"></sounds-toolbar>
     <sounds-list id="list" on-play="onPlay"></sounds-list>
   </template>
 </dom-module>
@@ -27,7 +27,8 @@
     },
 
     onTitle: function(e) {
-     document.title = e.detail;      
+      document.title = e.detail;  
+      this.$['toolbar'].soundboardTitle = e.detail;
     },
     
     onPlay: function(e) {

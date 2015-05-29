@@ -59,7 +59,7 @@
   <template>
     <div class="toolbar">
       <img class="content" src="/images/soundboard.png">
-      <span class="content">Title</span>
+      <span class="content">{{soundboardTitle}}</span>
       <sounds-target-tabs class="content" on-target-changed="onTargetChanged"></sounds-target-tabs>
       <paper-input class="content" on-value-changed="onFilterChanged" label="Filter (RegExp)"></paper-input>
     </div>
@@ -69,6 +69,14 @@
   Polymer({
 
     is: 'sounds-toolbar',
+    
+    properties: {
+       soundboardTitle: {
+         type: String,
+         value: "broadcast"
+       }       
+    },
+    
     onTargetChanged: function(e) {
       this.fire("target", e.detail.value);
     },
