@@ -6,7 +6,6 @@
 <link rel="import" href="sounds-target-tabs.html">
 <dom-module id="sounds-toolbar">
   <style>
-    
     .toolbar {
       background-color: #00bcd4;
       color: #fff;
@@ -87,20 +86,20 @@
       padding: 5px;
     }
     
-   </style>
+    .hide {
+      display: none !important;
+    }
+  </style>
   <template>
     <div class="toolbar">
-      <template is="dom-if" if="{{!search}}">        
-        <img class="logo content" src="/images/soundboard.png"></img>
-        <div class="title content"><span class="title-inner">{{soundboardTitle}}</span></div>
-
-        <iron-icon class="search-icon content right-adjust" on-click="onToggleSearch" icon="search"></iron-icon>
-        <sounds-target-tabs class="target-tabs content right-adjust" on-target-changed="onTargetChanged"></sounds-target-tabs>
-      </template>
-      <template is="dom-if" if="{{search}}">
-        <iron-icon class="search-icon content" on-click="onToggleSearch" icon="search"></iron-icon>
-        <input id="filter" class="search-input content" on-keyup="onFilterChanged" placeholder="Filter (RegExp)"></input>
-      </template>      
+      <img hidden$="{{search}}" class="logo content" src="/images/soundboard.png"></img>
+      <div hidden$="{{search}}" class="title content">
+        <span class="title-inner">{{soundboardTitle}}</span>
+      </div>
+      <iron-icon hidden$="{{search}}" class="search-icon content right-adjust" on-click="onToggleSearch" icon="search"></iron-icon>
+      <sounds-target-tabs hidden$="{{search}}" class="target-tabs content right-adjust" on-target-changed="onTargetChanged"></sounds-target-tabs>
+      <iron-icon hidden$="{{!search}}" class="search-icon content" on-click="onToggleSearch" icon="search"></iron-icon>
+      <input id="filter" hidden$="{{!search}}" class="search-input content" on-keyup="onFilterChanged" placeholder="Filter (RegExp)"></input>
     </div>
     <br>
   </template>
@@ -109,6 +108,23 @@
   Polymer({
 
     is: 'sounds-toolbar',
+    
+    ready: function() {
+      var that = this;
+      window.onkeydown = function(e) {
+        if (e.which === 27 || e.which === 13) {
+          that.search = false; 
+        } else {
+          that.search = true;
+          var inFocus = that.$$('#filter') === document.activeElement;
+         
+          if (!inFocus) {
+            that.$$('#filter').focus();
+            that.$$('#filter').sendKeys(e.key);
+          }       
+        }        
+      };
+    },
     
     properties: {
        soundboardTitle: {
@@ -131,6 +147,10 @@
         
     onToggleSearch: function() {
       this.search = !this.search;
+    },
+    
+    visibility: function(hide) {
+      return hide?"hide":"";
     }
   });
 </script>
