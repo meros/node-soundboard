@@ -4,13 +4,14 @@
 <link rel="import" href="sounds-list.html">
 <link rel="import" href="sounds-target-tabs.html">
 <link rel="import" href="sounds-toolbar.html">
+<link rel="import" href="sounds-pointer.html">
 <dom-module id="sounds-app">
   <style>
   </style>
   <template>
     <!-- Hidden elements -->
     <sounds-player id="player" on-socket-emit="onSocketEmit"></sounds-player>
-    <sounds-socket id="socket" on-sounds="onSounds" on-title="onTitle"></sounds-socket>
+    <sounds-socket id="socket" on-sounds="onSounds" on-title="onTitle" on-pointer="onPointer"></sounds-socket>
     
     <!-- Visible elements -->
     <sounds-toolbar id="toolbar" on-target="onTarget" on-filter="onFilter"></sounds-toolbar>    
@@ -21,6 +22,13 @@
   Polymer({
 
     is: 'sounds-app',
+    
+    ready: function() {
+      var that = this;
+      document.addEventListener('mousemove', function(e) {
+        that.$['socket'].socket.emit("pointer", {x: e.clientX, y: e.clientY});
+      }, false);
+    },
     
     onSounds: function(e) {
       this.$['list'].sounds=e.detail;
@@ -45,6 +53,10 @@
     
     onFilter: function(e) {
       this.$['list'].filter = e.detail;
+    },
+    
+    onPointer: function(e) {
+      $(this).append("<sounds-pointer x=" + e.detail.x + " y=" + e.detail.y + "></sounds-pointer>");
     }
   });
 </script>

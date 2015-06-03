@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="sounds-pointer">
+<style> 
+</style>
+  <template>    
+	<div><img src="/images/arrow_cursor.png"></div>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'sounds-pointer',
+
+    properties: {
+       x: Number,
+       y: Number
+    },
+	
+	ready: function() {
+		var $this = $(this);
+		$this.find("div").css({position: "absolute", left:this.x-18,top:this.y-12});
+		window.setTimeout(function() { $this.remove(); }, 500);
+	}    
+  });
+</script>

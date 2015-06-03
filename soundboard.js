@@ -111,6 +111,11 @@ io.on('connection', function (socket) {
         console.log("Requesting title!");
         getSoundFileNames(function (files) { socket.emit('title', configuration.pageTitle); });
     });
+    
+    socket.on('pointer', function (movement) {
+        console.log("Mouse movement " + movement.x + " " + movement.y);
+        io.sockets.emit('pointer', movement);
+    });
 });
 
 watch(configuration.dataDir, function (filename) {
