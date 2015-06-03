@@ -7,19 +7,24 @@
 <dom-module id="sounds-toolbar">
   <style>
     :host {
+      display: block;
+      height: 64px;
+    }
+
+    .toolbar {
       position:fixed;
       top:0;
       width:100%;
       z-index:100;
-    }
-
-    .toolbar {
       background-color: #00bcd4;
       color: #fff;
       display: block;
       height: 64px;
       width: 100%;
-      box-shadow: 0px 0px 5px #888888;
+    }
+    
+    .shadow {
+      box-shadow: 0px 0px 8px #666;
     }    
     
     .content {
@@ -98,7 +103,7 @@
     }
   </style>
   <template>
-    <div class="toolbar">
+    <div id="toolbar" class="toolbar">
       <img hidden$="{{search}}" class="logo content" src="/images/soundboard.png"></img>
       <div hidden$="{{search}}" class="title content">
         <span class="title-inner">{{soundboardTitle}}</span>
@@ -116,10 +121,17 @@
 
     is: 'sounds-toolbar',
     
-    ready: function() {
+    ready: function() {            
       var that = this;
+      window.onscroll = function(e) {
+        $(that.$.toolbar).toggleClass("shadow", $(window).scrollTop() > 0);
+      };
       window.onkeydown = function(e) {
-        if (e.which === 27 || e.which === 13) {
+        if (e.which === 27) {
+          that.$$('#filter').value = "";
+          that.search = false;
+          that.onFilterChanged()
+        }else if(e.which === 13) {          
           that.search = false; 
         } else {
           that.search = true;
@@ -127,7 +139,6 @@
          
           if (!inFocus) {
             that.$$('#filter').focus();
-            that.$$('#filter').sendKeys(e.key);
           }       
         }        
       };
@@ -148,7 +159,7 @@
       this.fire("target", e.detail.value);
     },
     
-    onFilterChanged: function(e) {      
+    onFilterChanged: function() {      
       this.fire("filter", this.$$('#filter').value);
     },
         
