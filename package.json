@@ -17,6 +17,8 @@
     "gulp-nodemon": "^2.0.3",
     "socket.io": ">= 1.3.5",
     "walk": ">= 2.3.9",
-    "node-watch": "~0.3.4"
+    "node-watch": "~0.3.4",
+    "gm": "~1.18.1",
+    "lwip": "0.0.7"
   }
 }

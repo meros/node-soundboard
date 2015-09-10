@@ -4,6 +4,8 @@ var fs = require('fs');
 var path = require('path');
 var walk = require('walk');
 var watch = require('node-watch');
+var lwip = require('lwip');
+
 
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
@@ -87,6 +89,29 @@ app.get('/play/*', function (req, res) {
 app.use('/data', express.static(configuration.dataDir, { maxAge: oneDay }));
 app.use('/', express.static(path.join(__dirname, './www')));
 
+var rescaled = [];
+
+app.get('/rescaled/*', function (req, res) {
+    var soundfile = path.basename(req.path);
+    console.log(soundfile);
+
+    if (soundfile in rescaled) {
+        res.send(rescaled[soundfile]);
+        return;
+    }
+
+    lwip.open(path.join(configuration.dataDir, soundfile), function (err, image) {
+
+        // check err...
+        // define a batch of manipulations and save to disk as JPEG:
+        image.batch()
+            .resize(100, 100, "linear")
+            .toBuffer("jpg", {quality: 70}, function (err, buffer) {
+                rescaled[soundfile] = buffer;
+                res.send(buffer);
+            });
+    });
+});
 
 io.on('connection', function (socket) {
     socket.on('playBroadcast', function (soundfile) {
@@ -111,7 +136,7 @@ io.on('connection', function (socket) {
         console.log("Requesting title!");
         getSoundFileNames(function (files) { socket.emit('title', configuration.pageTitle); });
     });
-    
+
     socket.on('pointer', function (movement) {
         console.log("Mouse movement " + movement.x + " " + movement.y);
         io.sockets.emit('pointer', movement);
