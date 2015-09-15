@@ -101,15 +101,25 @@
     .hide {
       display: none !important;
     }
+    
+    @media (max-width: 600px) {
+      .collapse-hide {
+        display: none !important;
+      }
+      
+      .collapse-left-adjust {
+        float: left !important;
+      }     
+    }
   </style>
   <template>
     <div id="toolbar" class="toolbar">
-      <img hidden$="{{search}}" class="logo content" src="/images/soundboard.png"></img>
-      <div hidden$="{{search}}" class="title content">
+      <img hidden$="{{search}}" class="collapse-hide logo content" src="/images/soundboard.png"></img>
+      <div hidden$="{{search}}" class="collapse-hide title content">
         <span class="title-inner">{{soundboardTitle}}</span>
       </div>
       <iron-icon hidden$="{{search}}" class="search-icon content right-adjust" on-click="onToggleSearch" icon="search"></iron-icon>
-      <sounds-target-tabs hidden$="{{search}}" class="target-tabs content right-adjust" on-target-changed="onTargetChanged"></sounds-target-tabs>
+      <sounds-target-tabs hidden$="{{search}}" class="target-tabs content right-adjust collapse-left-adjust" on-target-changed="onTargetChanged"></sounds-target-tabs>
       <iron-icon hidden$="{{!search}}" class="search-icon content" on-click="onToggleSearch" icon="search"></iron-icon>
       <input id="filter" hidden$="{{!search}}" class="search-input content" on-keyup="onFilterChanged" placeholder="Filter (RegExp)"></input>
     </div>
@@ -147,7 +157,7 @@
     properties: {
        soundboardTitle: {
          type: String,
-         value: "broadcast"
+         value: ""
        },
        search: {
          type: Boolean,

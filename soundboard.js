@@ -101,12 +101,9 @@ app.get('/rescaled/*', function (req, res) {
     }
 
     lwip.open(path.join(configuration.dataDir, soundfile), function (err, image) {
-
-        // check err...
-        // define a batch of manipulations and save to disk as JPEG:
         image.batch()
-            .resize(100, 100, "linear")
-            .toBuffer("jpg", {quality: 70}, function (err, buffer) {
+            .cover(100, 100)
+            .toBuffer("jpg", {quality: 80}, function (err, buffer) {
                 rescaled[soundfile] = buffer;
                 res.send(buffer);
             });
