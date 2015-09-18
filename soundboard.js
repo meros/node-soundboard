@@ -5,7 +5,7 @@ var path = require('path');
 var walk = require('walk');
 var watch = require('node-watch');
 var lwip = require('lwip');
-
+var schedule = require('node-schedule');
 
 var configuration = require('./configuration');
 var imageTypes = [".jpg", ".gif", ".png"];
@@ -145,6 +145,10 @@ watch(configuration.dataDir, function (filename) {
         console.log('Data dir updated, pushing sound files!');
         getFilesFullData(function (error, files) { io.emit('files', files); });
     }
+});
+
+var j = schedule.scheduleJob('0 5 8 * 0-5', function() {
+    playFile("bandcamp.wav");
 });
 
 console.log('Soundboard is starting on port http://localhost:' + configuration.listenPort + '...');
