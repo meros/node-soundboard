@@ -147,7 +147,7 @@ watch(configuration.dataDir, function (filename) {
     }
 });
 
-var j = schedule.scheduleJob('0 5 8 * 0-5', function() {
+var j = schedule.scheduleJob('0 5 8 * * 0-5', function() {
     playFile("bandcamp.wav");
 });
 
