@@ -1,6 +1,6 @@
 Our team bought a soundboard - you know to accentuate jokes and such:
 
-![Le soundboard](http://media.lagerhaus.se/Image/Generate.ashx?uri=~/Archive/Images/ProductImages/43084078.jpg&size=3&type=1&interpolationType=4&width=300&height=300 "Le soundboard")
+![Le soundboard](https://user-images.githubusercontent.com/450310/110112387-f6e7c580-7db1-11eb-9842-b909c800218f.png)
 
 The very definition of a soundboard states that it must contain the ubiquitous fart sound. And the board had that.. but to our great horror and dismay the box was missing the also ubiquitous rimshot (only second to fart sounds in priority on a sound board)
 
