@@ -1,6 +1,7 @@
-if [ -e $1.stats ]
+#!/bin/sh
+if [ -e "$1.stats" ]
 then
-    wc -l $1.stats | cut -f1 -d" "
+    wc -l < "$1.stats"
 else
     echo 0
 fi

@@ -42,9 +42,11 @@ gulp
 
 Sounds are the `.wav` files in `~/sounds`. Put a `.jpg`, `.gif` or `.png` with the same base name next to a sound to give its button a picture. The directory, page title and port are set in `configuration.js`. The server also plays `bandcamp.wav` at 08:05 Sunday to Friday.
 
+The server plays only the names of existing `.wav` files in that directory, and it runs `aplay` without a shell. `node --test test-sound-file.js` tests that check.
+
 ## Status
 
-Not maintained. The code was last changed in 2015.
+Not maintained. The code was written in 2015. In 2026 a security fix closed a command injection: before it, any client could run shell commands on the server through a sound name.
 
 ## License
 
