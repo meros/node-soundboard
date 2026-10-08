@@ -1,5 +1,5 @@
 var async = require('async')
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 var fs = require('fs');
 var path = require('path');
 var walk = require('walk');
@@ -8,6 +8,7 @@ var lwip = require('lwip');
 var schedule = require('node-schedule');
 
 var configuration = require('./configuration');
+var resolveSoundFile = require('./sound-file');
 var imageTypes = [".jpg", ".gif", ".png"];
 
 // Set up express and io
@@ -64,9 +65,21 @@ function getFileFullData(file, done) {
         )
 }
 
+// Play a sound on the server. The name comes from clients, so only the name
+// of an existing .wav file in dataDir is accepted, and no shell is involved.
 function playFile(file) {
-    var command = path.join(__dirname, '/scripts/play.sh') + ' ' + configuration.dataDir + "/" + file;
-    exec(command)
+    var soundPath = resolveSoundFile(configuration.dataDir, file);
+    if (!soundPath) {
+        console.log("Refusing to play " + JSON.stringify(file));
+        return false;
+    }
+
+    execFile(path.join(__dirname, 'scripts', 'play.sh'), [soundPath], function (err) {
+        if (err) {
+            console.log("Could not play " + soundPath + ": " + err.message);
+        }
+    });
+    return true;
 }
 
 function getFilesFullData(callback) {
@@ -82,7 +95,10 @@ var oneDay = 86400000;
 
 app.get('/play/*', function (req, res) {
     var soundfile = path.basename(req.path);
-    playFile(soundfile);
+    if (!playFile(soundfile)) {
+        res.status(404).send("No such sound");
+        return;
+    }
     res.send("Playing " + soundfile);
 });
 
@@ -101,6 +117,10 @@ app.get('/rescaled/*', function (req, res) {
     }
 
     lwip.open(path.join(configuration.dataDir, soundfile), function (err, image) {
+        if (err) {
+            res.status(404).send("No such image");
+            return;
+        }
         image.batch()
             .cover(100, 100)
             .toBuffer("jpg", {quality: 80}, function (err, buffer) {
@@ -112,16 +132,18 @@ app.get('/rescaled/*', function (req, res) {
 
 io.on('connection', function (socket) {
     socket.on('playBroadcast', function (soundfile) {
+        // Play on the server, and only broadcast names that are real sounds
+        if (!playFile(soundfile)) {
+            return;
+        }
         console.log("Broadcasting " + soundfile + " to " + io.engine.clientsCount + " clients");
-        // Broadcast play command to clients
         io.sockets.emit('play', soundfile);
-        // Play on server as well
-        playFile(soundfile);
     });
 
     socket.on('playRemote', function (soundfile) {
-        console.log("Playing remote " + soundfile);
-        playFile(soundfile);
+        if (playFile(soundfile)) {
+            console.log("Playing remote " + soundfile);
+        }
     });
 
     socket.on('getFiles', function () {
@@ -135,8 +157,11 @@ io.on('connection', function (socket) {
     });
 
     socket.on('pointer', function (movement) {
+        if (!movement || typeof movement.x !== 'number' || typeof movement.y !== 'number') {
+            return;
+        }
         console.log("Mouse movement " + movement.x + " " + movement.y);
-        io.sockets.emit('pointer', movement);
+        io.sockets.emit('pointer', { x: movement.x, y: movement.y });
     });
 });
 
