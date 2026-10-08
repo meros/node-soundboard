@@ -1,6 +1,7 @@
 {
   "name": "node-soundboard",
   "version": "0.0.1",
+  "license": "0BSD",
   "description": "Webfronted soundboard in nodejs, play sound effects on a server or locally on your accessing device",
   "repository": [
     {

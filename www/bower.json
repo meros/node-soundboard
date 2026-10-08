@@ -5,7 +5,7 @@
   "authors": [
     "Alexander Schrab <alexander.schrab@gmail.com>"
   ],
-  "license": "MIT",
+  "license": "0BSD",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -1,3 +1,7 @@
+# node-soundboard
+
+A web soundboard in Node.js, written in 2015. Phones open the page and play sounds on the server's speaker, on every connected device at once, or on the phone itself.
+
 Our team bought a soundboard - you know to accentuate jokes and such:
 
 ![Le soundboard](https://user-images.githubusercontent.com/450310/110112387-f6e7c580-7db1-11eb-9842-b909c800218f.png)
@@ -23,3 +27,25 @@ Features:
 * 100% vegan
 
 In our own study of productivity using a sample of 5 people (accidentally the same as in our team) and no control groups we can now loosely quote the [Hawthorne effect](http://en.wikipedia.org/wiki/Hawthorne_effect) for raising the effectiveness in our team by at least 500% thanks to the productivity boost of multiple fart sounds and a rimshots.
+
+## How to run
+
+You need Node.js, npm, Bower and Gulp 3, plus `aplay` (ALSA) on the server for remote playback. The code dates from 2015 and has not been updated, so expect an old Node.js version to be needed (Gulp 3 and the `lwip` image library do not build on current releases).
+
+```bash
+npm install -g bower gulp@3
+npm install
+gulp
+```
+
+`gulp` installs the front-end packages with Bower into `www/bower_components`, then starts `soundboard.js` with nodemon. Open http://localhost:8080 on your phone or computer.
+
+Sounds are the `.wav` files in `~/sounds`. Put a `.jpg`, `.gif` or `.png` with the same base name next to a sound to give its button a picture. The directory, page title and port are set in `configuration.js`. The server also plays `bandcamp.wav` at 08:05 Sunday to Friday.
+
+## Status
+
+Not maintained. The code was last changed in 2015.
+
+## License
+
+0BSD. See [LICENSE](LICENSE).
